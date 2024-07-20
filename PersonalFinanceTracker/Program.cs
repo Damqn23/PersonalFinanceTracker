@@ -1,54 +1,68 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-using PersonalFinanceTracker.Data;
-using PersonalFinanceTracker.Infrastructure.Data; // Ensure this namespace includes ApplicationDbContext
+using PersonalFinanceTracker.Infrastructure.Data;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configure services
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<FinanceDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Add Identity services
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = true; // Optional: Enforce confirmed account for signing in
-    options.Password.RequireDigit = true; // Example of additional password requirements
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
-})
-.AddEntityFrameworkStores<FinanceDbContext>()
-.AddDefaultTokenProviders(); // Adds default token providers for features like password reset
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<FinanceDbContext>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization(opt => opt.ResourcesPath = "Resources");
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new CultureInfo[]
+    {
+        new CultureInfo("en"),
+        new CultureInfo("es") // Example for Spanish
+    };
+
+    options.DefaultRequestCulture = new RequestCulture("en");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    options.RequestCultureProviders = new List<IRequestCultureProvider>()
+    {
+        new CookieRequestCultureProvider()
+    };
+});
+
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
+
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseMigrationsEndPoint(); // Useful for debugging EF migrations in development
+    app.UseDeveloperExceptionPage();
 }
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts(); // Adds HTTP Strict Transport Security in production
+    app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
-app.UseAuthentication(); // Adds authentication middleware
-app.UseAuthorization(); // Adds authorization middleware
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseRequestLocalization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages(); // Maps Razor Pages (including Identity pages)
+app.MapRazorPages();
 
-app.Run();
+await app.RunAsync();
