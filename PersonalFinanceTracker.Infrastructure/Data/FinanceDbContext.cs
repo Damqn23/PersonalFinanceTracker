@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PersonalFinanceTracker.Infrastructure.Data.Models;
 
 namespace PersonalFinanceTracker.Infrastructure.Data
 {
@@ -10,5 +11,9 @@ namespace PersonalFinanceTracker.Infrastructure.Data
             : base(options)
         {
         }
+        public DbSet<FinancialRecord> FinancialRecords { get; set; }
+        public DbSet<Budget> Budgets { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<TransactionType> TransactionTypes { get; set; }
     }
 }

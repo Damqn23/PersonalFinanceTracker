@@ -18,9 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Models\" />
     <Folder Include="Data\Repositories\" />
-    <Folder Include="DataConstatns\" />
   </ItemGroup>
 
 </Project>
