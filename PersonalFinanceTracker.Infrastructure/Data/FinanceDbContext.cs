@@ -5,7 +5,7 @@ using PersonalFinanceTracker.Infrastructure.Data.Models;
 
 namespace PersonalFinanceTracker.Infrastructure.Data
 {
-    public class FinanceDbContext : IdentityDbContext<IdentityUser>
+    public class FinanceDbContext : IdentityDbContext<ApplicationUser>
     {
         public FinanceDbContext(DbContextOptions<FinanceDbContext> options)
             : base(options)
