@@ -1,0 +1,34 @@
+﻿@using PersonalFinanceTracker.Infrastructure.Data.Models
+@model FinancialRecord
+
+<div class="container mt-4">
+    <h1>Delete Financial Record</h1>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="mb-3">
+            <h4>Are you sure you want to delete this record?</h4>
+            <div>
+                <strong>Description:</strong> @Model.Description
+            </div>
+            <div>
+                <strong>Amount:</strong> @Model.Amount.ToString("C")
+            </div>
+            <div>
+                <strong>Date:</strong> @Model.Date.ToShortDateString()
+            </div>
+            <div>
+                <strong>Category:</strong> @Model.Category?.Name
+            </div>
+            <div>
+                <strong>Type:</strong> @Model.TransactionType?.Name
+            </div>
+            <div>
+                <strong>User ID:</strong> @Model.UserId
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+        </div>
+    </form>
+</div>
