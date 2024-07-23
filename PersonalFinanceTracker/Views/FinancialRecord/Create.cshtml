@@ -1,43 +1,41 @@
-﻿@model FinancialRecordViewModel
+﻿@model FinancialRecordCreateViewModel
 
-@{
-    ViewData["Title"] = "Create Financial Record";
-}
-
-<h2>Create Financial Record</h2>
+<h1>Create Financial Record</h1>
 
 <form asp-action="Create">
-    <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Description"></label>
         <input asp-for="Description" class="form-control" />
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Amount"></label>
         <input asp-for="Amount" class="form-control" />
         <span asp-validation-for="Amount" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label asp-for="Date"></label>
         <input asp-for="Date" class="form-control" type="date" />
         <span asp-validation-for="Date" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="CategoryId">Category</label>
-        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))"></select>
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control">
+            <option value="">Select Category</option>
+        </select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="TransactionTypeId">Transaction Type</label>
-        <select asp-for="TransactionTypeId" class="form-control" asp-items="@(new SelectList(Model.TransactionTypes, "Id", "Name"))"></select>
+        <label asp-for="TransactionTypeId"></label>
+        <select asp-for="TransactionTypeId" asp-items="Model.TransactionTypes" class="form-control">
+            <option value="">Select Transaction Type</option>
+        </select>
         <span asp-validation-for="TransactionTypeId" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Create</button>
-    </div>
-</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

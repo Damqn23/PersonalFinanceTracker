@@ -7,14 +7,13 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Localization;
-using System.Collections.Generic;
-using System.Globalization;
 using PersonalFinanceTracker.Core.Interfaces;
 using PersonalFinanceTracker.Core.Services;
 using PersonalFinanceTracker.Infrastructure.Data;
 using PersonalFinanceTracker.Infrastructure.Data.Models;
 using PersonalFinanceTracker.Infrastructure.Data.Repositories;
+using System.Collections.Generic;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,16 +34,11 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<FinanceDbContext>()
     .AddDefaultTokenProviders();
 
-// Configure application cookies
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = "/Account/Login";
-    options.AccessDeniedPath = "/Account/AccessDenied";
-});
-
 // Register application services
 builder.Services.AddScoped<IFinancialRecordService, FinancialRecordService>();
-builder.Services.AddScoped<IRepository<FinancialRecord>, Repository<FinancialRecord>>();
+
+// Register generic repository for all types
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 // Configure localization
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
