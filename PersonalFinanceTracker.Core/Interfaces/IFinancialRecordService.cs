@@ -14,5 +14,8 @@ namespace PersonalFinanceTracker.Core.Interfaces
     Task AddRecordAsync(FinancialRecord record);
     Task UpdateRecordAsync(FinancialRecord record);
     Task DeleteRecordAsync(int id);
+
+    Task<IEnumerable<Category>> GetAllCategoriesAsync();
+    Task<IEnumerable<TransactionType>> GetAllTransactionTypesAsync();
     }
 }

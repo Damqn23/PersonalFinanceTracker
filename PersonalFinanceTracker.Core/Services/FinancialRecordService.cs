@@ -14,10 +14,12 @@ namespace PersonalFinanceTracker.Core.Services
     public class FinancialRecordService : IFinancialRecordService
     {
         private readonly IRepository<FinancialRecord> _repository;
+        private readonly FinanceDbContext _context;
 
-        public FinancialRecordService(IRepository<FinancialRecord> repository)
+        public FinancialRecordService(IRepository<FinancialRecord> repository, FinanceDbContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         public async Task<IEnumerable<FinancialRecord>> GetAllRecordsAsync()
@@ -30,10 +32,7 @@ namespace PersonalFinanceTracker.Core.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task AddRecordAsync(FinancialRecord record)
-        {
-            await _repository.AddAsync(record);
-        }
+        
 
         public async Task UpdateRecordAsync(FinancialRecord record)
         {
@@ -43,6 +42,21 @@ namespace PersonalFinanceTracker.Core.Services
         public async Task DeleteRecordAsync(int id)
         {
             await _repository.DeleteAsync(id);
+        }
+        public async Task AddRecordAsync(FinancialRecord record)
+        {
+            _context.FinancialRecords.Add(record);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
+        {
+            return await _context.Categories.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TransactionType>> GetAllTransactionTypesAsync()
+        {
+            return await _context.TransactionTypes.ToListAsync();
         }
     }
 }
