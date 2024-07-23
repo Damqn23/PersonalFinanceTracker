@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalFinanceTracker.Core.Interfaces;
 using PersonalFinanceTracker.Core.Models;
@@ -6,6 +7,8 @@ using PersonalFinanceTracker.Infrastructure.Data.Models;
 
 namespace PersonalFinanceTracker.Controllers
 {
+    [Authorize]
+    
     public class FinancialRecordController : Controller
     {
         private readonly IFinancialRecordService _financialRecordService;
@@ -19,20 +22,16 @@ namespace PersonalFinanceTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
-                var records = await _financialRecordService.GetAllRecordsAsync();
+            var records = await _financialRecordService.GetAllRecordsAsync();
+            var viewModel = new FinancialRecordIndexViewModel
+            {
+                Records = records.ToList()
+            };
 
-                // Create an instance of FinancialRecordIndexViewModel
-                var viewModel = new FinancialRecordIndexViewModel
-                {
-                    Records = records.ToList()
-                };
-
-                return View(viewModel);
-            
+            return View(viewModel);
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -46,25 +45,45 @@ namespace PersonalFinanceTracker.Controllers
 
         
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var viewModel = new FinancialRecordViewModel
+            {
+                Categories = await _financialRecordService.GetAllCategoriesAsync(),
+                TransactionTypes = await _financialRecordService.GetAllTransactionTypesAsync()
+            };
+            return View(viewModel);
         }
+
 
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,Amount,Date,Category,Type,UserId")] FinancialRecord record)
+        public async Task<IActionResult> Create(FinancialRecordViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var record = new FinancialRecord
+                {
+                    Description = viewModel.Description,
+                    Amount = viewModel.Amount,
+                    Date = viewModel.Date,
+                    CategoryId = viewModel.CategoryId,
+                    TransactionTypeId = viewModel.TransactionTypeId,
+                    UserId = User.Identity.Name // Assuming User.Identity.Name returns the UserId
+                };
+
                 await _financialRecordService.AddRecordAsync(record);
                 return RedirectToAction(nameof(Index));
             }
-            return View(record);
+
+            viewModel.Categories = await _financialRecordService.GetAllCategoriesAsync();
+            viewModel.TransactionTypes = await _financialRecordService.GetAllTransactionTypesAsync();
+
+            return View(viewModel);
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
