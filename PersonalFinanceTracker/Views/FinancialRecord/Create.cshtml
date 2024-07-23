@@ -1,43 +1,43 @@
-﻿@using PersonalFinanceTracker.Infrastructure.Data.Models
-@using System.Security.Claims
-@model FinancialRecord
+﻿@model FinancialRecordViewModel
 
-<div class="container mt-4">
-    <h1>Create Financial Record</h1>
-    <form asp-action="Create" method="post">
-        <div class="mb-3">
-            <label asp-for="Description" class="form-label"></label>
-            <input asp-for="Description" class="form-control" />
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Amount" class="form-label"></label>
-            <input asp-for="Amount" class="form-control" />
-            <span asp-validation-for="Amount" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Date" class="form-label"></label>
-            <input asp-for="Date" class="form-control" type="date" />
-            <span asp-validation-for="Date" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="CategoryId" class="form-label"></label>
-            <select asp-for="CategoryId" class="form-select">
-                <!-- Populate categories here -->
-            </select>
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="TransactionTypeId" class="form-label"></label>
-            <select asp-for="TransactionTypeId" class="form-select">
-                <!-- Populate transaction types here -->
-            </select>
-            <span asp-validation-for="TransactionTypeId" class="text-danger"></span>
-        </div>
-        <input type="hidden" asp-for="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a class="btn btn-secondary" asp-action="Index">Back to List</a>
-        </div>
-    </form>
+@{
+    ViewData["Title"] = "Create Financial Record";
+}
+
+<h2>Create Financial Record</h2>
+
+<form asp-action="Create">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Amount"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Date"></label>
+        <input asp-for="Date" class="form-control" type="date" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId">Category</label>
+        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))"></select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TransactionTypeId">Transaction Type</label>
+        <select asp-for="TransactionTypeId" class="form-control" asp-items="@(new SelectList(Model.TransactionTypes, "Id", "Name"))"></select>
+        <span asp-validation-for="TransactionTypeId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>

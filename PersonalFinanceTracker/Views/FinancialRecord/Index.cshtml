@@ -1,4 +1,4 @@
-﻿@model FinancialRecordIndexViewModel
+﻿@model PersonalFinanceTracker.Core.Models.FinancialRecordIndexViewModel
 
 <div class="container mt-4">
     <h1>@ViewData["Title"]</h1>
@@ -6,13 +6,11 @@
     <table class="table">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Description</th>
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Category</th>
-                <th>Type</th>
-                <th>User ID</th>
+                <th>Transaction Type</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -20,13 +18,11 @@
             @foreach (var item in Model.Records)
             {
                 <tr>
-                    <td>@item.Id</td>
                     <td>@item.Description</td>
                     <td>@item.Amount.ToString("C")</td>
                     <td>@item.Date.ToShortDateString()</td>
                     <td>@item.Category?.Name</td> <!-- Assuming Category has a Name property -->
                     <td>@item.TransactionType?.Name</td> <!-- Assuming TransactionType has a Name property -->
-                    <td>@item.UserId</td>
                     <td>
                         <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
                         <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
@@ -37,4 +33,3 @@
         </tbody>
     </table>
 </div>
-
