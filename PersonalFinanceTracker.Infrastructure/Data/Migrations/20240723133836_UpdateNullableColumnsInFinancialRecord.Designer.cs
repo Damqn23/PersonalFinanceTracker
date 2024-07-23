@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalFinanceTracker.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PersonalFinanceTracker.Infrastructure.Data;
 namespace PersonalFinanceTracker.Data.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240723133836_UpdateNullableColumnsInFinancialRecord")]
+    partial class UpdateNullableColumnsInFinancialRecord
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -12,9 +12,11 @@ namespace PersonalFinanceTracker.Infrastructure.Data.Models
     {
         [Required]
         [PersonalData]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "First Name must be between 3 and 50 characters")]
         public string FirstName { get; set; } = string.Empty;
         [Required]
         [PersonalData]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Last Name must be between 3 and 50 characters")]
         public string LastName { get; set; } = string.Empty;
         public ICollection<FinancialRecord> FinancialRecords { get; set; } = new List<FinancialRecord>();
 

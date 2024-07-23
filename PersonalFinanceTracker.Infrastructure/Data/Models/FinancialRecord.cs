@@ -29,14 +29,14 @@ namespace PersonalFinanceTracker.Infrastructure.Data.Models
 
         [Required]
         [Comment("Category identifier")]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
         public Category Category { get; set; } = null!;
 
         [Required]
         [Comment("Transaction type identifier")]
-        public int TransactionTypeId { get; set; }
+        public int? TransactionTypeId { get; set; }
 
         [ForeignKey("TransactionTypeId")]
         public TransactionType TransactionType { get; set; } = null!;

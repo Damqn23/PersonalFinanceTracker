@@ -1,4 +1,5 @@
-﻿using PersonalFinanceTracker.Infrastructure.Data.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using PersonalFinanceTracker.Infrastructure.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,23 +14,21 @@ namespace PersonalFinanceTracker.Core.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 3)]
         public string Description { get; set; }
 
         [Required]
-        [Range(0, 1000000)]
         public decimal Amount { get; set; }
 
         [Required]
         public DateTime Date { get; set; }
 
-        
+        [Required]
         public int CategoryId { get; set; }
+        public IEnumerable<SelectListItem> Categories { get; set; }
 
-        
+        [Required]
         public int TransactionTypeId { get; set; }
-
-        public IEnumerable<Category> Categories { get; set; }
-        public IEnumerable<TransactionType> TransactionTypes { get; set; }
+        public IEnumerable<SelectListItem> TransactionTypes { get; set; }
     }
+
 }

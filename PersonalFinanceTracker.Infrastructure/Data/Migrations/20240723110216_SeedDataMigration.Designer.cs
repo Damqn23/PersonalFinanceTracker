@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalFinanceTracker.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using PersonalFinanceTracker.Infrastructure.Data;
 namespace PersonalFinanceTracker.Data.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240723110216_SeedDataMigration")]
+    partial class SeedDataMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,13 +178,11 @@ namespace PersonalFinanceTracker.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -234,7 +234,7 @@ namespace PersonalFinanceTracker.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1553ed85-8d1c-48c2-acfc-e796d7cb8fdc",
+                            ConcurrencyStamp = "d0426c26-b0da-4bc5-98c0-f0a945327dec",
                             Email = "user@example.com",
                             EmailConfirmed = true,
                             FirstName = "",
@@ -242,7 +242,7 @@ namespace PersonalFinanceTracker.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@EXAMPLE.COM",
                             NormalizedUserName = "USER@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEK96HnajtRlBrcndL5oI5lM0XB7C3gPhpxxnKoba3hsH3N0K+pb7KzoKG3dZTqLXlA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEO4AZyC7rHv2Cy54jMbcmlpAxIU+9Q3IfdHk6oROB1SAvbCde8JhFeeKUuZ3B4dhjA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -342,8 +342,7 @@ namespace PersonalFinanceTracker.Data.Migrations
                     b.Property<int?>("BudgetId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
-                        .IsRequired()
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int")
                         .HasComment("Category identifier");
 
@@ -357,8 +356,7 @@ namespace PersonalFinanceTracker.Data.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasComment("Description of the transaction");
 
-                    b.Property<int?>("TransactionTypeId")
-                        .IsRequired()
+                    b.Property<int>("TransactionTypeId")
                         .HasColumnType("int")
                         .HasComment("Transaction type identifier");
 
@@ -385,7 +383,7 @@ namespace PersonalFinanceTracker.Data.Migrations
                             Id = 1,
                             Amount = 50.75m,
                             CategoryId = 1,
-                            Date = new DateTime(2024, 7, 23, 16, 38, 36, 83, DateTimeKind.Local).AddTicks(4650),
+                            Date = new DateTime(2024, 7, 23, 14, 2, 16, 97, DateTimeKind.Local).AddTicks(230),
                             Description = "Grocery Shopping",
                             TransactionTypeId = 2,
                             UserId = "1"
@@ -395,7 +393,7 @@ namespace PersonalFinanceTracker.Data.Migrations
                             Id = 2,
                             Amount = 1500.00m,
                             CategoryId = 2,
-                            Date = new DateTime(2024, 7, 23, 16, 38, 36, 83, DateTimeKind.Local).AddTicks(4689),
+                            Date = new DateTime(2024, 7, 23, 14, 2, 16, 97, DateTimeKind.Local).AddTicks(265),
                             Description = "Salary",
                             TransactionTypeId = 1,
                             UserId = "1"
