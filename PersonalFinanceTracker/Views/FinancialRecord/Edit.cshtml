@@ -1,6 +1,6 @@
 ﻿@using PersonalFinanceTracker.Infrastructure.Data.Models
 @using System.Security.Claims
-@model FinancialRecord
+@model FinancialRecordEditViewModel
 
 <div class="container mt-4">
     <h1>Edit Financial Record</h1>
@@ -22,15 +22,15 @@
         </div>
         <div class="mb-3">
             <label asp-for="CategoryId" class="form-label"></label>
-            <select asp-for="CategoryId" class="form-select">
-                <!-- Populate categories here -->
+            <select asp-for="CategoryId" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))" class="form-select">
+                <option value="">Select Category</option>
             </select>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="TransactionTypeId" class="form-label"></label>
-            <select asp-for="TransactionTypeId" class="form-select">
-                <!-- Populate transaction types here -->
+            <select asp-for="TransactionTypeId" asp-items="@(new SelectList(Model.TransactionTypes, "Id", "Name"))" class="form-select">
+                <option value="">Select Transaction Type</option>
             </select>
             <span asp-validation-for="TransactionTypeId" class="text-danger"></span>
         </div>

@@ -11,7 +11,7 @@ using System.Security.Claims;
 namespace PersonalFinanceTracker.Controllers
 {
     [Authorize]
-    
+
     public class FinancialRecordController : Controller
     {
         private readonly IFinancialRecordService _financialRecordService;
@@ -137,18 +137,51 @@ namespace PersonalFinanceTracker.Controllers
             }).ToList();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var record = await _financialRecordService.GetRecordByIdAsync(id);
+            if (record == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new FinancialRecordEditViewModel
+            {
+                Description = record.Description,
+                Amount = record.Amount,
+                Date = record.Date,
+                CategoryId = record.CategoryId,
+                TransactionTypeId = record.TransactionTypeId,
+                UserId = record.UserId,
+                Categories = await _financialRecordService.GetAllCategoriesAsync(),
+                TransactionTypes = await _financialRecordService.GetAllTransactionTypesAsync()
+            };
+
+            return View(viewModel);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Amount,Date,Category,Type,UserId")] FinancialRecord record)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Amount,Date,CategoryId,TransactionTypeId,UserId")] FinancialRecordEditViewModel viewModel)
         {
-            if (id != record.Id)
+            if (id != viewModel.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var record = new FinancialRecord
+                {
+                    Id = viewModel.Id,
+                    Description = viewModel.Description,
+                    Amount = viewModel.Amount,
+                    Date = viewModel.Date,
+                    CategoryId = viewModel.CategoryId,
+                    TransactionTypeId = viewModel.TransactionTypeId,
+                    UserId = viewModel.UserId
+                };
                 try
                 {
                     await _financialRecordService.UpdateRecordAsync(record);
@@ -163,10 +196,10 @@ namespace PersonalFinanceTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(record);
+            return View(viewModel);
         }
 
-        
+
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -178,7 +211,7 @@ namespace PersonalFinanceTracker.Controllers
             return View(record);
         }
 
-        
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
